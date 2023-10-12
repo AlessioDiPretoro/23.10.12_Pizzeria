@@ -1,0 +1,55 @@
+﻿@model IEnumerable<InForno.Models.DetailsOrders>
+
+@{
+    ViewBag.Title = "ShowCart";
+}
+
+<h2>Carrello</h2>
+
+@if (ViewBag.Nocart != null)
+{
+    <div> <h2>@ViewBag.Nocart </h2> </div>
+}
+else
+{
+    <div>
+        <hr />
+        <table class="table table-hover table-bordered container text-center">
+            <tr>
+                <th>Pizza</th>
+                <th class="d-none d-md-block">Foto</th>
+                <th>Quantità</th>
+                <th>Prezzo cad</th>
+                <th class="d-none d-md-block">Prezzo tot</th>
+                <th>Elimina</th>
+            </tr>
+            @{decimal tot = 0; }
+            @foreach (InForno.Models.DetailsOrders d in Model)
+            {
+                <tr>
+                    <td>@d.Products.name</td>
+                    <td class="d-none d-md-block"> <img class="cartImg" src="~/Content/img/@d.Products.photo" /> </td>
+                    <td>@d.quatity</td>
+                    <td>@d.Products.price.ToString("C2")</td>
+                    <td class="d-none d-md-block">@(d.Products.price * d.quatity) €</td>
+                    <td>
+                        @Html.ActionLink("🗑", "RemoveItem", "Cart", new { id = d.id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+                tot += d.Products.price * d.quatity;
+            }
+        </table>
+        <div> <b>Totale da pagare: @tot.ToString("C2") </b> </div>
+
+        <form method="post" action="@Url.Action("CreateOrder", "Orders", new { })">
+            <input type="text" class="form-control mt-2" name="address" placeholder="Indirizzo spedizione" />
+            <input type="text" class="form-control mt-2 mw-100" name="note" placeholder="Dettagli aggiuntivi" />
+            <button type="submit" class="btn btn-secondary">Conferma ordine</button>
+            @*  @Html.ActionLink("Conferma ordine", "CreateOrder", "Orders", new { }, new { @class = "btn btn-danger" })*@
+        </form>
+    </div>
+}
+@if (TempData["MissingAddress"] != null)
+{
+    <div class="alert alert-danger">@TempData["MissingAddress"]</div>
+}

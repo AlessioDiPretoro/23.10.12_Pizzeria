@@ -1,0 +1,49 @@
+﻿@model IEnumerable<InForno.Models.Orders>
+@{
+    ViewBag.Title = "AllOrdersByClient";
+}
+
+@if (Model != null)
+{
+
+    <h2>Lista ordini di @User.Identity.Name</h2>
+
+    <div>
+        <table class="table table-hover table-bordered container text-center">
+            <tr>
+                <th>Data</th>
+                <th>Pizze</th>
+                <th>Stato</th>
+            </tr>
+            @foreach (InForno.Models.Orders ord in Model)
+            {
+                <tr>
+                    <td>@ord.data</td>
+                    <td>
+                        <p>
+                            @foreach (InForno.Models.DetailsOrders details in ord.DetailsOrders)
+                            {
+                                @*if (details.Products == null)
+                                    {
+                                        <span>Elaborazione in corso, riavviare il browser</span>
+                                    }
+                                    else
+                                    {*@
+
+                                <span>@details.Products.name pz: @details.quatity</span>
+                                @*}*@
+                            }
+                        </p>
+                    </td>
+                    <td>@(ord.processed ? "pronto" : "in preparazione")</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div>
+        <p>Non ci sono ordini per questo utente</p>
+    </div>
+}

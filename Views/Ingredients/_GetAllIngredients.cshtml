@@ -1,0 +1,26 @@
+﻿@model IEnumerable<InForno.Models.Ingredients>
+
+@if (Model != null)
+{
+
+    <div class="mt-2 m-md-0">
+        <h2>Ingredienti</h2>
+        <hr />
+        <table class="table table-hover table-bordered container text-center">
+            <tr>
+                <th>Descrizione</th>
+                <th>Gestione</th>
+            </tr>
+            @foreach (InForno.Models.Ingredients i in Model)
+            {
+                <tr>
+                    <td>@i.description</td>
+                    <td>
+                        @Html.ActionLink("✒", "EditIngredient", "Ingredients", new { id = i.id }, new { @class = "btn btn-warning" })
+                        @Html.ActionLink("🗑", "DeleteIngredient", "Ingredients", new { id = i.id }, new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

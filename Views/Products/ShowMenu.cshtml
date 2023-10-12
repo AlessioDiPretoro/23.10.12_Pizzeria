@@ -1,0 +1,44 @@
+﻿@model IEnumerable<InForno.Models.Products>
+
+@{
+    ViewBag.Title = "ShowMenu";
+}
+
+<h2>Menù</h2>
+
+<div>
+    <hr />
+    <div class="row row-cols-3 gap-2 justify-content-center">
+        @foreach (InForno.Models.Products p in Model)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="~/Content/img/@p.photo" class="card-img-top" alt="foto pizza">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@p.name</h5>
+                    <h6 class="flex-grow-1">Lista ingredienti</h6>
+                    <p>
+                        @{
+                            int index = 0;}
+                        @foreach (InForno.Models.Products_Ingredients i in p.Products_Ingredients)
+                        {
+
+                            index++;
+                            if (index < p.Products_Ingredients.Count())
+                            {
+                                <span>@i.Ingredients.description,</span>
+                            }
+                            else
+                            {
+                                <span>@i.Ingredients.description</span>
+                            }
+                        }
+                    </p>
+                    <form method="post" action="@Url.Action("AddToCart", "Products", new { id = p.id })">
+                        <input type="number" class="form-control" name="quantity" placeholder="quantità" />
+                        <button type="submit" class="btn btn-secondary">Ordina</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

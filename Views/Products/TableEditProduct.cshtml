@@ -1,0 +1,35 @@
+﻿@model IEnumerable<InForno.Models.Products>
+@{
+    ViewBag.Title = "TableEditProduct";
+}
+
+<h2>TableEditProduct</h2>
+
+<table class="table table-hover table-bordered container text-center">
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Foto</th>
+        <th>Prezzo</th>
+        <th>Tempi di consegna</th>
+        <th>Modifica</th>
+        <th>Elimina</th>
+    </tr>
+    @foreach (InForno.Models.Products p in Model)
+    {
+        <tr>
+            <td>@p.id</td>
+            <td>@p.name</td>
+            <td><img src="~/Content/img/@p.photo" class="cartImg" /></td>
+            <td>@p.price.ToString("C2")</td>
+            <td>@p.deliveryTime</td>
+
+            <td>@Html.ActionLink("✒", "EditProduct", "Products", new { id = p.id }, new { @class = "btn btn-warning" })</td>
+            <td>@Html.ActionLink("✒", "DeleteProduct", "Products", new { id = p.id }, new { @class = "btn btn-danger" })</td>
+        </tr>
+    }
+</table>
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}

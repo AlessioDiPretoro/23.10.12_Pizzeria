@@ -1,0 +1,112 @@
+﻿@model IEnumerable<InForno.Models.Orders>
+@{
+    ViewBag.Title = "AllOrders";
+}
+
+@if (Model != null)
+{
+
+    <h2>Lista ordini ricevuti</h2>
+
+    <div>
+        <table class="table table-hover table-bordered container text-center">
+            <tr>
+                <th>Data</th>
+                <th>Cliente</th>
+                <th>Stato</th>
+                <th>Pizze</th>
+                <th>Modifica</th>
+            </tr>
+            @foreach (InForno.Models.Orders ord in Model)
+            {
+                <tr>
+                    <td>@ord.data</td>
+                    <td>@ord.Users.nome @ord.Users.cognome</td>
+                    <td>@(ord.processed ? "pronto" : "in preparazione")</td>
+                    <td>
+                        <p>
+                            @foreach (InForno.Models.DetailsOrders details in ord.DetailsOrders)
+                            {
+                                <span>@details.Products.name pz: @details.quatity</span>
+                            }
+                        </p>
+                    </td>
+                    <td>@Html.ActionLink("Segna come preparato", "OrderPrepared", "Orders", new { id = ord.id }, new { @class = "btn btn-warning" })</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div>
+        <p>Non ci sono ordini in corso</p>
+    </div>
+}
+
+<hr />
+<h2>Analisi vendite</h2>
+<div class="d-flex justify-content-center gap-5 align-items-end ">
+    <div>
+
+    <button id="btnTP" class="btn btn-secondary">Ordini evasi oggi</button>
+    </div>
+    <div>
+        <input type="date" id="dateToSearch" class="form-control" />
+        <button id="btnTE" class="btn btn-secondary">Totale incasso per data</button>
+    </div>
+</div>
+
+<div id="response" class="text-center mt-2"></div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#btnTP').click(function () {
+                $.ajax({
+                    method: "POST",
+                    url: "ProcessedToday",
+
+                    success: function (data) {
+                        $('#response').empty();
+                        console.log(data);
+                        if (data.length > 0) {
+                            $('#response').append("<p>Risultati per Ordini consegnati oggi:</p>")
+                            $.each(data, function (index, value) {
+                                $("#response").append("<p> N°ordine: " + value.id + " username: " + value.buyerUsername + "</p>");
+                            })
+                        } else {
+                            $('#response').append("<p>Nessun ordine consegnato oggi:</p>")
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            })
+
+            $('#btnTE').click(function () {
+                var dateValue = $("#dateToSearch").val()
+                $.ajax({
+                    method: "POST",
+                    url: "CollectedByDay",
+                    data: { inputVal: dateValue },
+                    success: function (data) {
+                        $('#response').empty();
+                        console.log(data);
+                        if (data > 0 ) {
+                            $("#response").append("<p> Totale incasso per data: " + data + " € </p>");
+                        } else {
+                            $('#response').append("<p>Nessun incasso alla data richiesta:</p>")
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                })
+            })
+
+        })
+    </script>
+}
