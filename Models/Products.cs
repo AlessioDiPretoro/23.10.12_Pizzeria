@@ -22,7 +22,6 @@ namespace InForno.Models
         [Display(Name = "Nome")]
         public string name { get; set; }
 
-        [Required]
         [StringLength(200)]
         [Display(Name = "Carica foto")]
         public string photo { get; set; }

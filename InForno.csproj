@@ -176,6 +176,10 @@
     <Compile Include="Migrations\202310121048460_InitialCreate.designer.cs">
       <DependentUpon>202310121048460_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310130904103_PhotoNotRequired.cs" />
+    <Compile Include="Migrations\202310130904103_PhotoNotRequired.designer.cs">
+      <DependentUpon>202310130904103_PhotoNotRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\DetailsOrders.cs" />
@@ -315,6 +319,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202310121048460_InitialCreate.resx">
       <DependentUpon>202310121048460_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310130904103_PhotoNotRequired.resx">
+      <DependentUpon>202310130904103_PhotoNotRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
